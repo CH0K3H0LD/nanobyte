@@ -1,0 +1,35 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class ClickCounter : MonoBehaviour
+{
+    private int sceneIndex = 0;
+    private int[] targetData = { 0, 10000, 10000000 };
+
+    private bool sceneChanged = false;
+
+    private void Start()
+    {
+        sceneIndex = SceneManager.GetActiveScene().buildIndex;
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && !sceneChanged)
+        {
+            GameManager.data++;
+
+            if (GameManager.data >= targetData[sceneIndex])
+            {
+                Debug.Log("Congratulations! You reached the target data amount for this scene.");
+                sceneChanged = true;
+
+                int nextSceneIndex = sceneIndex + 1;
+                if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+                {
+                    SceneManager.LoadScene(nextSceneIndex);
+                }
+            }
+        }
+    }
+}
